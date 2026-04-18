@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  outputFileTracingRoot: "/home/runner/workspace",
   allowedDevOrigins: ["*.pike.replit.dev", "*.riker.replit.dev", "*.replit.dev"],
   images: {
     remotePatterns: [

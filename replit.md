@@ -4,7 +4,7 @@
 
 FoodFlow is a multi-tenant SaaS platform for restaurants in Bangladesh. It enables restaurant owners to launch an online ordering storefront, manage menus and orders, view analytics, and lets Super Admins manage tenants, subscriptions, and platform-wide metrics.
 
-**Status:** Next.js 15 app with Prisma/PostgreSQL backend routes implemented. Database is provisioned and seeded with demo FoodFlow data. Storefront, checkout, order tracking, dashboard/admin APIs, auth, and settings endpoints are available.
+**Status:** Next.js 15 app with Prisma/PostgreSQL backend routes implemented. Database is provisioned and schema is synced. Storefront, checkout, order tracking, dashboard/admin APIs, auth, and settings endpoints are available.
 
 ## Tech Stack
 
@@ -12,8 +12,8 @@ FoodFlow is a multi-tenant SaaS platform for restaurants in Bangladesh. It enabl
 |---|---|
 | App | Next.js 15 App Router |
 | Backend API | Next.js Route Handlers |
-| Database | PostgreSQL + Prisma ORM |
-| Auth | bcryptjs password hashing + JWT |
+| Database | PostgreSQL + Prisma ORM (Replit built-in DB) |
+| Auth | bcryptjs password hashing + JWT (JWT_SECRET env var) |
 | Styling | Tailwind CSS v4 |
 | Forms | react-hook-form + zod |
 | State | Zustand cart store with localStorage persistence |
@@ -40,6 +40,14 @@ FoodFlow is a multi-tenant SaaS platform for restaurants in Bangladesh. It enabl
 - `web/app/api/**/route.ts` — backend API routes.
 - `web/store/cart.ts` — client-only Zustand cart store with explicit hydration.
 - `web/components/dashboard/sidebar.tsx` and `web/components/dashboard/admin-sidebar.tsx` — responsive dashboard/admin navigation.
+- `web/next.config.ts` — Next.js config with Replit preview domain allowlist and outputFileTracingRoot set.
+
+## Environment Variables
+
+| Key | Purpose |
+|---|---|
+| `DATABASE_URL` | Replit built-in PostgreSQL connection string (auto-set) |
+| `JWT_SECRET` | Secret for signing JWTs (set via Replit secrets) |
 
 ## API Routes
 
@@ -64,7 +72,7 @@ FoodFlow is a multi-tenant SaaS platform for restaurants in Bangladesh. It enabl
 - Admin email: `admin@foodflow.com.bd`
 - Demo password for seeded users: `foodflow123`
 - Main demo restaurant slug: `dhaka-biryani-house`
-- Dev JWT secret fallback: `foodflow-dev-secret`; set `JWT_SECRET` for production.
+- Run seed: `cd web && npm run db:seed`
 
 ## Frontend Routes
 
@@ -90,6 +98,7 @@ FoodFlow is a multi-tenant SaaS platform for restaurants in Bangladesh. It enabl
 
 - Dev server runs on port `5000`, host `0.0.0.0`.
 - `allowedDevOrigins` is configured for Replit preview domains.
+- `outputFileTracingRoot` set to `/home/runner/workspace` to silence lockfile warning.
 - Prisma version is pinned to `6.19.0` because Prisma 7 changes schema/config behavior.
 - Run database setup from `web/`: `npx prisma generate`, `npx prisma db push`, `npm run db:seed`.
 - The dashboard/admin desktop sidebars collapse to fixed bottom navigation on mobile.

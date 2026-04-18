@@ -36,3 +36,8 @@ externalPort = 80
 [deployment]
 deploymentTarget = "static"
 publicDir = "."
+
+[userenv]
+
+[userenv.shared]
+JWT_SECRET = "df6db8a8e937a8066195fdd52a29df0e5e79012ed3576035d54df1ecb0f57c11b2283cf59eea08f603e1d6362e1d8ebf876acabe23ffcff67598c12d841fb7ef"
