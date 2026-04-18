@@ -1,3 +1,8 @@
 {
-  "/page": "app/page.js"
+  "/icon.svg/route": "app/icon.svg/route.js",
+  "/api/restaurants/[slug]/menu/route": "app/api/restaurants/[slug]/menu/route.js",
+  "/api/admin/restaurants/route": "app/api/admin/restaurants/route.js",
+  "/page": "app/page.js",
+  "/dashboard/menu/page": "app/dashboard/menu/page.js",
+  "/admin/restaurants/page": "app/admin/restaurants/page.js"
 }

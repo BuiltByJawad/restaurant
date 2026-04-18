@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Eye, EyeOff, Loader2 } from "lucide-react";
+import { Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -11,11 +11,14 @@ import { toast } from "sonner";
 import { loginSchema, type LoginFormData } from "@/lib/validations";
 import { Button } from "@/components/ui/button";
 import { FormField, Input } from "@/components/ui/form-field";
+import { useAuthStore, useAuthHasHydrated } from "@/store/auth";
 
 export default function LoginForm() {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const setAuth = useAuthStore((s) => s.setAuth);
+  const hydrated = useAuthHasHydrated();
 
   const {
     register,
@@ -23,21 +26,37 @@ export default function LoginForm() {
     formState: { errors },
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-    },
+    defaultValues: { email: "", password: "" },
   });
 
   const onSubmit = async (data: LoginFormData) => {
     setIsLoading(true);
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    
-    setIsLoading(false);
-    toast.success("Welcome back! Redirecting...");
-    router.push("/dashboard");
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      const json = await res.json();
+      if (!res.ok) {
+        toast.error(json.error ?? "Invalid email or password");
+        return;
+      }
+      setAuth(json.data.token, json.data.user, json.data.restaurantSlug);
+      toast.success("Welcome back!");
+      if (json.data.user.role === "SUPER_ADMIN") {
+        router.push("/admin");
+      } else {
+        router.push("/dashboard");
+      }
+    } catch {
+      toast.error("Something went wrong. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
+
+  if (!hydrated) return null;
 
   return (
     <div className="space-y-8">
@@ -53,10 +72,7 @@ export default function LoginForm() {
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-        <FormField
-          label="Email Address"
-          error={errors.email?.message}
-        >
+        <FormField label="Email Address" error={errors.email?.message}>
           <Input
             {...register("email")}
             type="email"
@@ -66,10 +82,7 @@ export default function LoginForm() {
           />
         </FormField>
 
-        <FormField
-          label="Password"
-          error={errors.password?.message}
-        >
+        <FormField label="Password" error={errors.password?.message}>
           <div className="relative">
             <Input
               {...register("password")}
@@ -99,21 +112,13 @@ export default function LoginForm() {
           </Link>
         </div>
 
-        <Button
-          type="submit"
-          className="w-full"
-          size="lg"
-          loading={isLoading}
-        >
+        <Button type="submit" className="w-full" size="lg" loading={isLoading}>
           {isLoading ? "Signing in..." : "Sign in"}
         </Button>
 
         <p className="text-center text-sm text-slate-600">
           Don't have an account?{" "}
-          <Link
-            href="/auth/register"
-            className="font-semibold text-[#0A7A5A] hover:underline"
-          >
+          <Link href="/auth/register" className="font-semibold text-[#0A7A5A] hover:underline">
             Start free trial
           </Link>
         </p>

@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { FormField, Input, SelectField } from "@/components/ui/form-field";
 import { PRICING_PLANS } from "@/lib/dummy-data";
 import { cn, formatCurrency } from "@/lib/utils";
+import { useAuthStore } from "@/store/auth";
 
 const CITIES = [
   "Dhaka",
@@ -28,6 +29,7 @@ export default function RegisterFlow() {
   const router = useRouter();
   const [step, setStep] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
+  const setAuth = useAuthStore((s) => s.setAuth);
 
   const {
     register,
@@ -103,12 +105,29 @@ export default function RegisterFlow() {
 
   const onSubmit = async (data: RegisterFormData) => {
     setIsLoading(true);
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    
-    setIsLoading(false);
-    toast.success("🎉 Account created! Setting up your restaurant...");
-    router.push("/dashboard");
+    try {
+      const res = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...data,
+          restaurantPhone: data.phone,
+          address: `${data.area}, ${data.city}`,
+        }),
+      });
+      const json = await res.json();
+      if (!res.ok) {
+        toast.error(json.error ?? "Registration failed. Please try again.");
+        return;
+      }
+      setAuth(json.data.token, json.data.user, json.data.restaurantSlug);
+      toast.success("Account created! Setting up your restaurant...");
+      router.push("/dashboard");
+    } catch {
+      toast.error("Something went wrong. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (

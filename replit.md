@@ -4,7 +4,7 @@
 
 FoodFlow is a multi-tenant SaaS platform for restaurants in Bangladesh. It enables restaurant owners to launch an online ordering storefront, manage menus and orders, view analytics, and lets Super Admins manage tenants, subscriptions, and platform-wide metrics.
 
-**Status:** Next.js 15 app with Prisma/PostgreSQL backend routes implemented. Database is provisioned and schema is synced. Storefront, checkout, order tracking, dashboard/admin APIs, auth, and settings endpoints are available.
+**Status:** Fully wired. All dashboard pages (overview, orders, menu, analytics, customers, settings) and all admin pages (overview, restaurants, subscriptions) connect to real PostgreSQL data via API routes. Auth (login/register) uses JWT + Zustand persistence. No dummy data used anywhere in authenticated flows.
 
 ## Tech Stack
 
