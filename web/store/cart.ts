@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
@@ -121,9 +123,14 @@ export const useCartStore = create<CartState>()(
 );
 
 export function useCartHasHydrated() {
-  const [hasHydrated, setHasHydrated] = useState(useCartStore.persist.hasHydrated());
+  const [hasHydrated, setHasHydrated] = useState(false);
 
   useEffect(() => {
+    if (!useCartStore.persist) {
+      setHasHydrated(true);
+      return;
+    }
+
     const unsubscribe = useCartStore.persist.onFinishHydration(() => {
       setHasHydrated(true);
     });

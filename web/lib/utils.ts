@@ -6,7 +6,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function formatCurrency(amount: number): string {
-  return `৳${new Intl.NumberFormat("en-BD").format(amount)}`;
+  return `৳${Math.round(amount).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
 }
 
 export function formatDate(date: Date | string): string {

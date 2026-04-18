@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { checkoutSchema, type CheckoutFormData } from "@/lib/validations";
 import { useCartHasHydrated, useCartStore } from "@/store/cart";
-import { formatCurrency, calculateDeliveryFee, calculateTax, generateOrderId, cn } from "@/lib/utils";
+import { formatCurrency, calculateDeliveryFee, calculateTax, cn } from "@/lib/utils";
 import { AREAS } from "@/lib/dummy-data";
 import { FormField, Input, Textarea, SelectField } from "@/components/ui/form-field";
 import { Button } from "@/components/ui/button";
@@ -63,14 +63,41 @@ export default function CheckoutPage({ params: paramsPromise }: { params: Promis
 
   const onSubmit = async (data: CheckoutFormData) => {
     setIsSubmitting(true);
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-    
-    const orderId = generateOrderId();
-    setOrderSuccess(orderId);
-    setIsSubmitting(false);
-    clearCart();
-    toast.success("Order placed successfully!");
+
+    try {
+      const response = await fetch("/api/orders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          restaurantSlug: params.slug,
+          customerName: data.fullName,
+          customerPhone: data.phone,
+          customerEmail: data.email || undefined,
+          deliveryAddress: data.address,
+          deliveryArea: data.area,
+          deliveryCity: data.city,
+          paymentMethod: data.paymentMethod,
+          notes: data.notes,
+          items: items.map((item) => ({
+            menuItemId: item.menuItem.id,
+            quantity: item.quantity,
+          })),
+        }),
+      });
+
+      const result = await response.json();
+      if (!response.ok || !result.ok) {
+        throw new Error(result.error || "Could not place order");
+      }
+
+      setOrderSuccess(result.data.orderNumber);
+      clearCart();
+      toast.success("Order placed successfully!");
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "Could not place order");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (orderSuccess) {

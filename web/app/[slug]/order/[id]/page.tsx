@@ -1,6 +1,8 @@
 import { Metadata } from "next";
-import { DASHBOARD_ORDERS, RESTAURANTS } from "@/lib/dummy-data";
-import { formatCurrency, formatTime } from "@/lib/utils";
+import { notFound } from "next/navigation";
+import { getRestaurantBySlug, mapOrder } from "@/lib/backend";
+import { prisma } from "@/lib/prisma";
+import { cn, formatCurrency, formatTime } from "@/lib/utils";
 import { 
   CheckCircle2, 
   ChefHat, 
@@ -29,18 +31,39 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function OrderTrackingPage({ params }: Props) {
   const { slug, id } = await params;
-  const restaurant = RESTAURANTS.find(r => r.slug === slug);
-  const order = DASHBOARD_ORDERS[0]; // Using as dummy data
+  const [restaurant, rawOrder] = await Promise.all([
+    getRestaurantBySlug(slug),
+    prisma.order.findFirst({
+      where: { OR: [{ id }, { orderNumber: id }] },
+      include: { items: true, payment: true },
+    }),
+  ]);
+
+  if (!restaurant || !rawOrder) {
+    notFound();
+  }
+
+  const order = mapOrder(rawOrder);
 
   const statusSteps = [
-    { key: "pending", label: "Placed", icon: CheckCircle2, time: "12:30 PM" },
-    { key: "confirmed", label: "Confirmed", icon: CheckCircle2, time: "12:32 PM" },
-    { key: "preparing", label: "Preparing", icon: ChefHat, time: "12:35 PM" },
-    { key: "out_for_delivery", label: "Out for delivery", icon: Bike, time: "12:55 PM" },
-    { key: "delivered", label: "Delivered", icon: Home, time: "01:15 PM" },
+    { key: "pending", label: "Placed", icon: CheckCircle2, time: formatTime(order.createdAt) },
+    { key: "preparing", label: "Preparing", icon: ChefHat, time: order.status === "pending" ? "" : formatTime(order.createdAt) },
+    { key: "ready", label: "Ready", icon: CheckCircle2, time: order.status === "ready" ? formatTime(order.estimatedDelivery) : "" },
+    { key: "out_for_delivery", label: "Out for delivery", icon: Bike, time: order.status === "out_for_delivery" ? formatTime(order.estimatedDelivery) : "" },
+    { key: "delivered", label: "Delivered", icon: Home, time: order.status === "delivered" ? formatTime(order.estimatedDelivery) : "" },
   ];
 
-  const currentStatusIndex = 2; // Mocking "Preparing" status
+  const currentStatusIndex = Math.max(0, statusSteps.findIndex((step) => step.key === order.status));
+  const statusCopy =
+    order.status === "pending"
+      ? "Your order has been received!"
+      : order.status === "ready"
+        ? "Your order is ready!"
+        : order.status === "out_for_delivery"
+          ? "Your order is on the way!"
+          : order.status === "delivered"
+            ? "Your order has been delivered!"
+            : "We're preparing your food!";
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -61,12 +84,12 @@ export default async function OrderTrackingPage({ params }: Props) {
             <div className="bg-emerald-50 w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6">
               <ChefHat className="w-12 h-12 text-[#0A7A5A] animate-pulse" />
             </div>
-            <h2 className="text-2xl font-extrabold text-slate-900 mb-1">We're preparing your food!</h2>
+            <h2 className="text-2xl font-extrabold text-slate-900 mb-1">{statusCopy}</h2>
             <p className="text-slate-500 mb-6">Order ID: <span className="font-bold text-slate-900">{id}</span></p>
             
             <div className="bg-slate-50 rounded-xl p-4 inline-flex flex-col items-center">
               <p className="text-xs text-slate-500 uppercase font-bold tracking-wider mb-1">Estimated Delivery</p>
-              <p className="text-3xl font-black text-[#0A7A5A]">25-35 MIN</p>
+              <p className="text-3xl font-black text-[#0A7A5A]">{formatTime(order.estimatedDelivery)}</p>
             </div>
           </div>
 
@@ -105,7 +128,7 @@ export default async function OrderTrackingPage({ params }: Props) {
                               {step.label}
                             </p>
                             {isCurrent && (
-                              <p className="text-xs text-[#0A7A5A] font-medium mt-1">Our chef is cooking your meal with love</p>
+                            <p className="text-xs text-[#0A7A5A] font-medium mt-1">Latest status from {restaurant.name}</p>
                             )}
                           </div>
                           {isCompleted && (

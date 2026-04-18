@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { RESTAURANTS, MENU_ITEMS, MENU_CATEGORIES } from "@/lib/dummy-data";
-import { formatCurrency, cn } from "@/lib/utils";
+import { getRestaurantMenu } from "@/lib/backend";
+import { formatCurrency } from "@/lib/utils";
 import { Star, Clock, ShoppingBag, MapPin } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { CategoryTabs } from "@/components/customer/category-tabs";
@@ -13,7 +13,8 @@ interface Props {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const restaurant = RESTAURANTS.find((r) => r.slug === slug);
+  const menu = await getRestaurantMenu(slug);
+  const restaurant = menu?.restaurant;
   if (!restaurant) return { title: "Restaurant Not Found" };
 
   return {
@@ -24,14 +25,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function RestaurantPage({ params }: Props) {
   const { slug } = await params;
-  const restaurant = RESTAURANTS.find((r) => r.slug === slug);
+  const menu = await getRestaurantMenu(slug);
+  const restaurant = menu?.restaurant;
 
   if (!restaurant) {
     notFound();
   }
 
-  const categories = MENU_CATEGORIES.filter((c) => c.restaurantId === restaurant.id).sort((a, b) => a.order - b.order);
-  const items = MENU_ITEMS.filter((i) => i.restaurantId === restaurant.id);
+  const categories = menu.categories;
+  const items = menu.items;
 
   return (
     <div className="min-h-screen bg-slate-50 pb-24">

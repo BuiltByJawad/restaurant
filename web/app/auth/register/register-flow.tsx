@@ -11,7 +11,7 @@ import { registerSchema, type RegisterFormData } from "@/lib/validations";
 import { Button } from "@/components/ui/button";
 import { FormField, Input, SelectField } from "@/components/ui/form-field";
 import { PRICING_PLANS } from "@/lib/dummy-data";
-import { cn } from "@/lib/utils";
+import { cn, formatCurrency } from "@/lib/utils";
 
 const CITIES = [
   "Dhaka",
@@ -286,7 +286,7 @@ export default function RegisterFlow() {
                     <h3 className="font-bold text-slate-900">{plan.name}</h3>
                     <div className="mt-1 flex items-baseline gap-1">
                       <span className="text-xl font-bold text-[#0A7A5A]">
-                        ৳{plan.price === 0 ? "Custom" : new Intl.NumberFormat("en-BD").format(plan.price)}
+                        {plan.price === 0 ? "Custom" : formatCurrency(plan.price)}
                       </span>
                       {plan.price > 0 && <span className="text-xs text-slate-500">/mo</span>}
                     </div>

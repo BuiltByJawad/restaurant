@@ -19,7 +19,7 @@ import { LandingNavbar } from "@/components/shared/navbar";
 import { Footer } from "@/components/shared/footer";
 import { PRICING_PLANS, TESTIMONIALS, FAQS } from "@/lib/dummy-data";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { cn, formatCurrency } from "@/lib/utils";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -57,7 +57,7 @@ const PricingCard = ({ plan, isYearly }: { plan: any, isYearly: boolean }) => {
       <div className="mb-8">
         <div className="flex items-baseline gap-1">
           <span className="text-4xl font-bold text-slate-900">
-            {plan.price === 0 ? "Custom" : `৳${new Intl.NumberFormat("en-BD").format(price)}`}
+            {plan.price === 0 ? "Custom" : formatCurrency(price)}
           </span>
           {plan.price !== 0 && (
             <span className="text-slate-500 font-medium">/mo</span>
