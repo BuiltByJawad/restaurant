@@ -1,0 +1,16 @@
+{
+  "/page": "app/page.js",
+  "/auth/login/page": "app/auth/login/page.js",
+  "/auth/register/page": "app/auth/register/page.js",
+  "/[slug]/page": "app/[slug]/page.js",
+  "/[slug]/checkout/page": "app/[slug]/checkout/page.js",
+  "/dashboard/analytics/page": "app/dashboard/analytics/page.js",
+  "/admin/page": "app/admin/page.js",
+  "/dashboard/page": "app/dashboard/page.js",
+  "/dashboard/orders/page": "app/dashboard/orders/page.js",
+  "/dashboard/menu/page": "app/dashboard/menu/page.js",
+  "/dashboard/settings/page": "app/dashboard/settings/page.js",
+  "/dashboard/customers/page": "app/dashboard/customers/page.js",
+  "/admin/restaurants/page": "app/admin/restaurants/page.js",
+  "/admin/subscriptions/page": "app/admin/subscriptions/page.js"
+}
