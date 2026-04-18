@@ -151,7 +151,7 @@ export default function AnalyticsPage() {
             <div className="flex items-center justify-between mb-8">
               <div>
                 <h2 className="text-lg font-bold text-slate-900">Revenue Trends</h2>
-                <p className="text-sm text-slate-500">Monthly breakdown for {new Date().getFullYear()}</p>
+                <p className="text-sm text-slate-500">Monthly breakdown for 2025</p>
               </div>
             </div>
             <div className="h-72 w-full">

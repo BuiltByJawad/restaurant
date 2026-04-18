@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type { MenuItem } from "@/lib/dummy-data";
@@ -108,6 +109,7 @@ export const useCartStore = create<CartState>()(
     }),
     {
       name: "foodflow-cart",
+      skipHydration: true,
       partialize: (state) => ({
         restaurantId: state.restaurantId,
         restaurantSlug: state.restaurantSlug,
@@ -117,3 +119,23 @@ export const useCartStore = create<CartState>()(
     }
   )
 );
+
+export function useCartHasHydrated() {
+  const [hasHydrated, setHasHydrated] = useState(useCartStore.persist.hasHydrated());
+
+  useEffect(() => {
+    const unsubscribe = useCartStore.persist.onFinishHydration(() => {
+      setHasHydrated(true);
+    });
+
+    if (!useCartStore.persist.hasHydrated()) {
+      useCartStore.persist.rehydrate();
+    } else {
+      setHasHydrated(true);
+    }
+
+    return unsubscribe;
+  }, []);
+
+  return hasHydrated;
+}

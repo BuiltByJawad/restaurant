@@ -25,6 +25,8 @@ export type Restaurant = {
   ownerName: string;
 };
 
+const DEMO_NOW_MS = new Date("2025-05-15T12:00:00.000Z").getTime();
+
 export type MenuCategory = {
   id: string;
   restaurantId: string;
@@ -372,8 +374,8 @@ export const DASHBOARD_ORDERS: Order[] = [
     ],
     subtotal: 930, deliveryFee: 0, tax: 47, discount: 0, total: 977,
     status: "pending", paymentMethod: "sslcommerz", paymentStatus: "paid",
-    createdAt: new Date(Date.now() - 5 * 60000).toISOString(),
-    estimatedDelivery: new Date(Date.now() + 35 * 60000).toISOString(),
+    createdAt: new Date(DEMO_NOW_MS - 5 * 60000).toISOString(),
+    estimatedDelivery: new Date(DEMO_NOW_MS + 35 * 60000).toISOString(),
   },
   {
     id: "ord-2", orderNumber: "FF-104820",
@@ -387,8 +389,8 @@ export const DASHBOARD_ORDERS: Order[] = [
     ],
     subtotal: 600, deliveryFee: 60, tax: 30, discount: 0, total: 690,
     status: "preparing", paymentMethod: "cod", paymentStatus: "pending",
-    createdAt: new Date(Date.now() - 18 * 60000).toISOString(),
-    estimatedDelivery: new Date(Date.now() + 22 * 60000).toISOString(),
+    createdAt: new Date(DEMO_NOW_MS - 18 * 60000).toISOString(),
+    estimatedDelivery: new Date(DEMO_NOW_MS + 22 * 60000).toISOString(),
   },
   {
     id: "ord-3", orderNumber: "FF-104819",
@@ -403,8 +405,8 @@ export const DASHBOARD_ORDERS: Order[] = [
     ],
     subtotal: 850, deliveryFee: 0, tax: 43, discount: 50, total: 843,
     status: "ready", paymentMethod: "sslcommerz", paymentStatus: "paid",
-    createdAt: new Date(Date.now() - 32 * 60000).toISOString(),
-    estimatedDelivery: new Date(Date.now() + 8 * 60000).toISOString(),
+    createdAt: new Date(DEMO_NOW_MS - 32 * 60000).toISOString(),
+    estimatedDelivery: new Date(DEMO_NOW_MS + 8 * 60000).toISOString(),
   },
   {
     id: "ord-4", orderNumber: "FF-104818",
@@ -418,8 +420,8 @@ export const DASHBOARD_ORDERS: Order[] = [
     ],
     subtotal: 650, deliveryFee: 60, tax: 33, discount: 0, total: 743,
     status: "out_for_delivery", paymentMethod: "sslcommerz", paymentStatus: "paid",
-    createdAt: new Date(Date.now() - 48 * 60000).toISOString(),
-    estimatedDelivery: new Date(Date.now() + 3 * 60000).toISOString(),
+    createdAt: new Date(DEMO_NOW_MS - 48 * 60000).toISOString(),
+    estimatedDelivery: new Date(DEMO_NOW_MS + 3 * 60000).toISOString(),
   },
   {
     id: "ord-5", orderNumber: "FF-104817",
@@ -433,19 +435,19 @@ export const DASHBOARD_ORDERS: Order[] = [
     ],
     subtotal: 1560, deliveryFee: 0, tax: 78, discount: 100, total: 1538,
     status: "delivered", paymentMethod: "sslcommerz", paymentStatus: "paid",
-    createdAt: new Date(Date.now() - 90 * 60000).toISOString(),
-    estimatedDelivery: new Date(Date.now() - 45 * 60000).toISOString(),
+    createdAt: new Date(DEMO_NOW_MS - 90 * 60000).toISOString(),
+    estimatedDelivery: new Date(DEMO_NOW_MS - 45 * 60000).toISOString(),
   },
 ];
 
 export const CUSTOMERS: Customer[] = [
-  { id: "cust-1", name: "Arif Hossain", phone: "01712-111222", email: "arif@example.com", totalOrders: 14, totalSpent: 9840, lastOrderDate: new Date(Date.now() - 5 * 60000).toISOString(), address: "House 5, Road 2", area: "Dhanmondi" },
-  { id: "cust-2", name: "Fatema Begum", phone: "01819-334455", email: "fatema@example.com", totalOrders: 8, totalSpent: 5420, lastOrderDate: new Date(Date.now() - 18 * 60000).toISOString(), address: "Flat 3B, Mirpur DOHS", area: "Mirpur" },
-  { id: "cust-3", name: "Nasir Uddin", phone: "01611-556677", email: "nasir@example.com", totalOrders: 22, totalSpent: 16750, lastOrderDate: new Date(Date.now() - 32 * 60000).toISOString(), address: "Road 11, Block C", area: "Banani" },
-  { id: "cust-4", name: "Sadia Islam", phone: "01921-778899", email: "sadia@example.com", totalOrders: 5, totalSpent: 3610, lastOrderDate: new Date(Date.now() - 48 * 60000).toISOString(), address: "House 22, Gulshan Ave", area: "Gulshan" },
-  { id: "cust-5", name: "Rahim Sheikh", phone: "01855-990011", email: "rahim@example.com", totalOrders: 31, totalSpent: 24820, lastOrderDate: new Date(Date.now() - 90 * 60000).toISOString(), address: "Plot 14, Uttara Sector 7", area: "Uttara" },
-  { id: "cust-6", name: "Roksana Akter", phone: "01712-221133", email: "roksana@example.com", totalOrders: 9, totalSpent: 6240, lastOrderDate: new Date(Date.now() - 2 * 24 * 3600000).toISOString(), address: "House 3, Mohammadpur", area: "Mohammadpur" },
-  { id: "cust-7", name: "Jamal Uddin", phone: "01819-443322", email: "jamal@example.com", totalOrders: 17, totalSpent: 12980, lastOrderDate: new Date(Date.now() - 3 * 24 * 3600000).toISOString(), address: "Road 5, Lalmatia", area: "Lalmatia" },
+  { id: "cust-1", name: "Arif Hossain", phone: "01712-111222", email: "arif@example.com", totalOrders: 14, totalSpent: 9840, lastOrderDate: new Date(DEMO_NOW_MS - 5 * 60000).toISOString(), address: "House 5, Road 2", area: "Dhanmondi" },
+  { id: "cust-2", name: "Fatema Begum", phone: "01819-334455", email: "fatema@example.com", totalOrders: 8, totalSpent: 5420, lastOrderDate: new Date(DEMO_NOW_MS - 18 * 60000).toISOString(), address: "Flat 3B, Mirpur DOHS", area: "Mirpur" },
+  { id: "cust-3", name: "Nasir Uddin", phone: "01611-556677", email: "nasir@example.com", totalOrders: 22, totalSpent: 16750, lastOrderDate: new Date(DEMO_NOW_MS - 32 * 60000).toISOString(), address: "Road 11, Block C", area: "Banani" },
+  { id: "cust-4", name: "Sadia Islam", phone: "01921-778899", email: "sadia@example.com", totalOrders: 5, totalSpent: 3610, lastOrderDate: new Date(DEMO_NOW_MS - 48 * 60000).toISOString(), address: "House 22, Gulshan Ave", area: "Gulshan" },
+  { id: "cust-5", name: "Rahim Sheikh", phone: "01855-990011", email: "rahim@example.com", totalOrders: 31, totalSpent: 24820, lastOrderDate: new Date(DEMO_NOW_MS - 90 * 60000).toISOString(), address: "Plot 14, Uttara Sector 7", area: "Uttara" },
+  { id: "cust-6", name: "Roksana Akter", phone: "01712-221133", email: "roksana@example.com", totalOrders: 9, totalSpent: 6240, lastOrderDate: new Date(DEMO_NOW_MS - 2 * 24 * 3600000).toISOString(), address: "House 3, Mohammadpur", area: "Mohammadpur" },
+  { id: "cust-7", name: "Jamal Uddin", phone: "01819-443322", email: "jamal@example.com", totalOrders: 17, totalSpent: 12980, lastOrderDate: new Date(DEMO_NOW_MS - 3 * 24 * 3600000).toISOString(), address: "Road 5, Lalmatia", area: "Lalmatia" },
 ];
 
 export const WEEKLY_REVENUE = [
@@ -479,11 +481,11 @@ export const PLATFORM_STATS: PlatformStats = {
 };
 
 export const PLATFORM_ACTIVITY = [
-  { id: 1, type: "upgrade", message: "Dhaka Biryani House upgraded to Pro plan", time: new Date(Date.now() - 2 * 3600000).toISOString(), icon: "trending-up" },
-  { id: 2, type: "signup", message: "Cox's Bazar Seafood Palace signed up on Starter plan", time: new Date(Date.now() - 5 * 3600000).toISOString(), icon: "user-plus" },
-  { id: 3, type: "payment", message: "Payment received from Sylhet Spice Garden — ৳5,099", time: new Date(Date.now() - 8 * 3600000).toISOString(), icon: "credit-card" },
-  { id: 4, type: "payment", message: "Payment received from Chittagong Sea Kitchen — ৳999", time: new Date(Date.now() - 12 * 3600000).toISOString(), icon: "credit-card" },
-  { id: 5, type: "warning", message: "Rajshahi Sweets trial ending in 3 days", time: new Date(Date.now() - 18 * 3600000).toISOString(), icon: "alert-triangle" },
+  { id: 1, type: "upgrade", message: "Dhaka Biryani House upgraded to Pro plan", time: new Date(DEMO_NOW_MS - 2 * 3600000).toISOString(), icon: "trending-up" },
+  { id: 2, type: "signup", message: "Cox's Bazar Seafood Palace signed up on Starter plan", time: new Date(DEMO_NOW_MS - 5 * 3600000).toISOString(), icon: "user-plus" },
+  { id: 3, type: "payment", message: "Payment received from Sylhet Spice Garden — ৳5,099", time: new Date(DEMO_NOW_MS - 8 * 3600000).toISOString(), icon: "credit-card" },
+  { id: 4, type: "payment", message: "Payment received from Chittagong Sea Kitchen — ৳999", time: new Date(DEMO_NOW_MS - 12 * 3600000).toISOString(), icon: "credit-card" },
+  { id: 5, type: "warning", message: "Rajshahi Sweets trial ending in 3 days", time: new Date(DEMO_NOW_MS - 18 * 3600000).toISOString(), icon: "alert-triangle" },
 ];
 
 export const PRICING_PLANS = [

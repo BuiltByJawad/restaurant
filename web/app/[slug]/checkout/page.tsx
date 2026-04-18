@@ -4,7 +4,7 @@ import { use } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { checkoutSchema, type CheckoutFormData } from "@/lib/validations";
-import { useCartStore } from "@/store/cart";
+import { useCartHasHydrated, useCartStore } from "@/store/cart";
 import { formatCurrency, calculateDeliveryFee, calculateTax, generateOrderId, cn } from "@/lib/utils";
 import { AREAS } from "@/lib/dummy-data";
 import { FormField, Input, Textarea, SelectField } from "@/components/ui/form-field";
@@ -28,6 +28,7 @@ import { toast } from "sonner";
 export default function CheckoutPage({ params: paramsPromise }: { params: Promise<{ slug: string }> }) {
   const params = use(paramsPromise);
   const router = useRouter();
+  const hasHydrated = useCartHasHydrated();
   const { items, restaurantName, subtotal, clearCart } = useCartStore();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [orderSuccess, setOrderSuccess] = useState<string | null>(null);
@@ -55,10 +56,10 @@ export default function CheckoutPage({ params: paramsPromise }: { params: Promis
   const deliveryType = watch("deliveryType");
 
   useEffect(() => {
-    if (items.length === 0 && !orderSuccess) {
+    if (hasHydrated && items.length === 0 && !orderSuccess) {
       router.push(`/${params.slug}`);
     }
-  }, [items, orderSuccess, params.slug, router]);
+  }, [hasHydrated, items, orderSuccess, params.slug, router]);
 
   const onSubmit = async (data: CheckoutFormData) => {
     setIsSubmitting(true);
@@ -87,6 +88,14 @@ export default function CheckoutPage({ params: paramsPromise }: { params: Promis
         >
           Track Order
         </Button>
+      </div>
+    );
+  }
+
+  if (!hasHydrated) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <div className="text-sm font-medium text-slate-500">Loading your cart...</div>
       </div>
     );
   }

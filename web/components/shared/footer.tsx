@@ -80,7 +80,7 @@ export function Footer() {
 
         <div className="border-t border-slate-800 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-sm">
-            © {new Date().getFullYear()} FoodFlow. All rights reserved. Made with ❤️ in Bangladesh.
+            © 2025 FoodFlow. All rights reserved. Made with ❤️ in Bangladesh.
           </p>
           <div className="flex items-center gap-4 text-sm">
             <span className="flex items-center gap-1.5">

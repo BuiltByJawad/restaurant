@@ -48,7 +48,7 @@ export default function LoginPage() {
         
         <div className="relative z-10">
           <p className="text-emerald-200 text-sm">
-            © {new Date().getFullYear()} FoodFlow Technologies Ltd.
+            © 2025 FoodFlow Technologies Ltd.
           </p>
         </div>
 

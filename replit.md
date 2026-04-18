@@ -172,7 +172,9 @@ The schema is designed for a multi-tenant SaaS. All tenant data is isolated by `
 ## Development Notes
 
 - Dev server runs on port 5000, host 0.0.0.0 (required for Replit proxy)
-- `allowedDevOrigins` set in next.config.ts for Replit's `*.replit.dev` preview domains
+- `allowedDevOrigins` set in next.config.ts for Replit preview domains, including riker/pike cluster hosts
+- Demo timestamps use a fixed reference time to avoid server/client hydration drift in the Next.js preview
+- Persisted cart state is rehydrated after mount to keep server/client rendering consistent
 - Tailwind CSS v4 — configuration is in `globals.css` using `@theme` directive (no tailwind.config.js)
 - All forms use react-hook-form + zod. Errors display inline in red below the field. No asterisks.
 - `"use client"` required on any component using useState, useEffect, hooks, or browser APIs

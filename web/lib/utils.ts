@@ -6,22 +6,24 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function formatCurrency(amount: number): string {
-  return `৳${amount.toLocaleString("en-BD")}`;
+  return `৳${new Intl.NumberFormat("en-BD").format(amount)}`;
 }
 
 export function formatDate(date: Date | string): string {
-  return new Date(date).toLocaleDateString("en-BD", {
+  return new Intl.DateTimeFormat("en-BD", {
     year: "numeric",
     month: "short",
     day: "numeric",
-  });
+    timeZone: "Asia/Dhaka",
+  }).format(new Date(date));
 }
 
 export function formatTime(date: Date | string): string {
-  return new Date(date).toLocaleTimeString("en-BD", {
+  return new Intl.DateTimeFormat("en-BD", {
     hour: "2-digit",
     minute: "2-digit",
-  });
+    timeZone: "Asia/Dhaka",
+  }).format(new Date(date));
 }
 
 export function formatDateTime(date: Date | string): string {

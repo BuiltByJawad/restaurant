@@ -1,6 +1,6 @@
 "use client";
 
-import { useCartStore } from "@/store/cart";
+import { useCartHasHydrated, useCartStore } from "@/store/cart";
 import { Button } from "@/components/ui/button";
 import { Plus, ShoppingCart, ArrowRight } from "lucide-react";
 import type { MenuItem, Restaurant } from "@/lib/dummy-data";
@@ -64,10 +64,11 @@ export function MenuItemCard({ item, restaurant }: MenuItemCardProps) {
 }
 
 export function FloatingCartBar({ restaurantSlug }: { restaurantSlug: string }) {
+  const hasHydrated = useCartHasHydrated();
   const { items, subtotal, totalItems } = useCartStore();
   const count = totalItems();
 
-  if (count === 0) return null;
+  if (!hasHydrated || count === 0) return null;
 
   return (
     <div className="fixed bottom-6 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-lg z-50">
