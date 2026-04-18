@@ -1,0 +1,32 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "LtEZFtAS8xKWruAS1ppEf"
+uri = "file://artifacts/mockup-sandbox/public/images/avatar-rahim.png"
+type = "image"
+title = "Owner avatar"
+
+[[generated]]
+id = "OReGoXSWhTbRnv68e8wNf"
+uri = "file://artifacts/mockup-sandbox/public/images/beef-biryani.png"
+type = "image"
+title = "Beef Biryani"
+
+[[generated]]
+id = "ibMjUBiy3mypU8HfbhmPE"
+uri = "file://artifacts/mockup-sandbox/public/images/chicken-tikka.png"
+type = "image"
+title = "Chicken Tikka"
+
+[[generated]]
+id = "VlC8nwz5xy4ZaXNCZU1b3"
+uri = "file://artifacts/mockup-sandbox/public/images/mutton-kebab.png"
+type = "image"
+title = "Mutton Kebab"
+
+[[generated]]
+id = "61ZIBDwrV8VFkZUZkS8C_"
+uri = "file://artifacts/mockup-sandbox/public/images/biryani-logo.png"
+type = "image"
+title = "Restaurant logo"
